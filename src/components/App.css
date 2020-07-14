@@ -1,0 +1,21 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 24px;
+    color: rgb(25, 42, 92);
+    background-color: rgb(182, 193, 203);
+    border: 3px solid black;
+    border-radius: 4px;
+    margin: 4px 4px 4px 4px;
+    padding: 5px 4px 4px 5px;
+}
+

@@ -7,6 +7,7 @@ import {
   getNextPets,
   adoptPet,
 } from './APIService';
+import './Adopt.css';
 
 class Adopt extends Component {
   constructor(props) {
@@ -24,7 +25,9 @@ class Adopt extends Component {
     this.getData();
     this.interval = setInterval(() => {
       const { user, people } = this.state;
-      if (!people.length || !user) return;
+      if (!people.length || !user) {
+        return;
+      }
       if (people[0] === user && people.length < 5) {
         this.demoUsers();
       } else if (people[0] !== user && people.length > 1) {
@@ -97,7 +100,10 @@ class Adopt extends Component {
 
   handleQueue = () => {
     const { pets } = this.state;
-    const types = Object.entries(pets).filter(([pet]) => pet !== null);
+    const types = Object.entries(pets).filter(([pet, types]) => pet !== null);
+    if(types.length === 0) {
+      return;
+    }
     const petAdopted = types[Math.floor(Math.random() * types.length)][0];
     this.handleAdopt(petAdopted);
   };
@@ -122,9 +128,16 @@ class Adopt extends Component {
   };
 
   render() {
-    const { pets, people, user, staff, error } = this.state;
+    const { pets, people, user, staff, hasError } = this.state;
     const canAdopt = (!people.length && user) || people[0] === user;
-    console.log(people);
+    if(hasError === true) {
+      return (
+        <div className="error">
+          <h4>Uh-oh!</h4>
+      <p>Looks like something went wrong... Please refresh! If the problem persists, please contact { staff }</p>
+        </div>
+      )
+    }
     return (
       <div className="adopt-page">
         <header className="adopt-header">
@@ -138,7 +151,7 @@ class Adopt extends Component {
             {!user ? (
               <li>
                 <form onSubmit={() => this.handleAddPerson}>
-                  <label htmlFor="user" />
+                  <label htmlFor="user">Enter name to get in line</label>
                   <input type="text" name="user" />
                   <button>Submit</button>
                 </form>
@@ -153,20 +166,22 @@ class Adopt extends Component {
           {Object.entries(pets).map((type) => {
             const { cat, dog } = type[1];
             return (
-              <div>
-                <details>
+              <div className="adopt">
+                <h4>Click details arrow to see our next dog!</h4>
+                <details className="dogs">
                   <img src={dog.imageURL} alt={dog.description} />
                   <ul>
-                    <li>{dog.name}</li>
-                    <li>{dog.breed}</li>
-                    <li>{dog.gender}</li>
+                    <li>Name - {dog.name}</li>
+                    <li>Breed - {dog.breed}</li>
+                    <li>Gender - {dog.gender}</li>
                   </ul>
                   <p>{dog.story}</p>
                   <button onClick={() => this.handleAdopt('dog')}>
                     Adopt this Dog!
                   </button>
                 </details>
-                <details>
+                <h4>Click details arrow to see our next cat!</h4>
+                <details className="cats">
                   <img src={cat.imageURL} alt={cat.description} />
                   <ul>
                     <li>{cat.name}</li>

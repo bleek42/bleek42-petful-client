@@ -77,7 +77,7 @@ class Adopt extends Component {
 		ev.preventDefault();
 		const userName = ev.target.user.value;
 		addPerson(userName).then(() => {
-			sessionStorage.setItem(userName);
+			sessionStorage.setItem('user-name', userName);
 			this.setState({
 				user: userName,
 			});
@@ -153,7 +153,7 @@ class Adopt extends Component {
 									<p>{dog.story}</p>
 									<button
 										disabled={!canAdopt}
-										onClick={() => this.handleAdopt('dog')}
+										onClick={() => this.handleAdopt('dogs')}
 									>
 										Adopt this Dog!
 									</button>
@@ -169,7 +169,7 @@ class Adopt extends Component {
 									<p>{cat.story}</p>
 									<button
 										disabled={!canAdopt}
-										onClick={() => this.handleAdopt('cat')}
+										onClick={() => this.handleAdopt('cats')}
 									>
 										Adopt this Cat!
 									</button>

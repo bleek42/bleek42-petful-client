@@ -4,6 +4,37 @@ import Pets from '../images/dog-cat.jpeg';
 import './Home.css';
 
 export class Home extends Component {
+
+  shelterStaff = [
+    {
+      name: 'Brandon Leek',
+      id: Math.round(Math.random() * 10),
+    },
+    {
+      name: 'Donna Leek',
+      id: Math.round(Math.random() * 10),
+    },
+    {
+      name: 'Liz Nye',
+      id: Math.round(Math.random() * 10),
+    },
+    {
+      name: 'Brandon Leek',
+      id: Math.round(Math.random() * 10),
+    },
+  ];
+
+  setStaff = () => {
+    const mapStaff = this.shelterStaff.map((name, id) => {
+      return this.setState({
+        staff: mapStaff,
+        ...name,
+        ...id,
+      });
+    });
+    console.log(this.state.staff);
+  };
+
   render() {
     return (
       <div className="home">

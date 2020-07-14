@@ -100,7 +100,7 @@ class Adopt extends Component {
 
   handleQueue = () => {
     const { pets } = this.state;
-    const types = Object.entries(pets).filter(([pet, types]) => pet !== null);
+    const types = Object.entries(pets).filter(([pet]) => pet !== null);
     if(types.length === 0) {
       return;
     }
@@ -176,7 +176,8 @@ class Adopt extends Component {
                     <li>Gender - {dog.gender}</li>
                   </ul>
                   <p>{dog.story}</p>
-                  <button onClick={() => this.handleAdopt('dog')}>
+                  <button
+                   onClick={() => this.handleAdopt('dog')}>
                     Adopt this Dog!
                   </button>
                 </details>
@@ -190,7 +191,6 @@ class Adopt extends Component {
                   </ul>
                   <p>{cat.story}</p>
                   <button
-                    disabled={!canAdopt}
                     onClick={() => this.handleAdopt('cat')}
                   >
                     Adopt this Cat!

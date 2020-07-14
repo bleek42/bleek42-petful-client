@@ -9,14 +9,14 @@ export class Home extends Component {
       <div className="home">
         <header>
           <h1>Welcome to Petful Adoption Center</h1>
-          <h4>A free animal adoption, no-kill shelter!</h4>
+          <h4>A free-to-adopt, no-kill shelter for cats & dogs!</h4>
         </header>
         <section>
           <p>
             We have a long-standing policy: all cats and dogs are free to adopt...
           </p>
           <img src={Pets} alt="leopard-cat-border-collie-img" />
-          <p>... so what's the catch? The catch is you must adopt choose the cat or dog that has been here the longest!</p>
+          <p>... so what's the catch, you ask? The catch is you must adopt choose the cat or dog that has been here the longest!</p>
           <p>
             You don't have to pay us a dime, but you
             must take who we currently have had in our care for the

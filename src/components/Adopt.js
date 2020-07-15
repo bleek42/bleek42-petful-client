@@ -49,8 +49,25 @@ class Adopt extends Component {
     const userName = ev.target.user.value;
     const { user, people, allPets } = this.state;
     if(user) {
-      addPerson(userName).then(() => {
-        this.getData();
+      addPerson(userName).then((userName) => {
+        this.getData().then((data) => {
+            this.interval = setInterval((data) => {
+                let num = Math.floor((Math.random() * 2));
+                if(num === 1) {
+                    adoptPet('dog');
+                    deletePerson(people[0]);
+                } else {
+                    adoptPet('cat');
+                    deletePerson(people[0])
+                }
+                this.setState({
+                    user: userName,
+                    people: data.people,
+                    pets: data.pets,
+                    allPets: data.allPets
+                })
+            })
+        })
         this.interval = setInterval(() => {
           console.table(allPets);
         //   let num = Math.floor(Math.random() * 2);
@@ -61,7 +78,6 @@ class Adopt extends Component {
         //     adoptPet('cat');
         //     deletePerson([0])
         //   }
-          this.getData();
           this.setState({
             user: userName,
             ...people,

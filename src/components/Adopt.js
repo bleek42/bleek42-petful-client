@@ -5,7 +5,8 @@ import {
 	addPerson,
 	getAllPets,
 	getNextPets,
-	adoptPet,
+  adoptPet,
+  deletePerson,
 } from './APIService';
 import './Adopt.css';
 
@@ -50,18 +51,22 @@ class Adopt extends Component {
     if(user) {
       sessionStorage.setItem('user', userName);
       addPerson(userName).then(() => {
+        this.getData();
         const interval = setInterval(() => {
           console.table(allPets);
           let num = Math.floor(Math.random() * 2);
           if(num === 1) {
             adoptPet('dog');
+            deletePerson(people[0]);
           } else {
             adoptPet('cat');
+            deletePerson([0])
           }
           this.getData();
-          people.push(userName);
           this.setState({
             user: userName,
+            ...people,
+            ...allPets
           })
           if(user === people[0]) {
             clearInterval(interval);

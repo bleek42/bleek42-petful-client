@@ -82,4 +82,26 @@ const addPerson = async (newPerson) => {
 	}
 };
 
-export { getNextPets, adoptPet, getAllPets, getPeople, addPerson };
+const deletePerson = async(removedPerson) => {
+	try {
+		const person = {
+			name: removedPerson,
+		};
+		const req = {
+			method: 'DELETE',
+			body: JSON.stringify(person),
+			headers : {
+				'content-type': 'application/json',
+			},
+		};
+		const res = await fetch(`${config.API_URL}/people`);
+		const data = await res.json();
+		return data;
+	} catch(error) {
+		throw new Error({
+			message: 'something went wrong! please refresh or contact an administrator.'
+		})
+	}
+}
+
+export { getNextPets, adoptPet, getAllPets, getPeople, addPerson, deletePerson };

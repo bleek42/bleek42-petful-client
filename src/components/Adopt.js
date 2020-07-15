@@ -68,22 +68,6 @@ class Adopt extends Component {
                 })
             })
         })
-        this.interval = setInterval(() => {
-          console.table(allPets);
-        //   let num = Math.floor(Math.random() * 2);
-        //   if(num === 1) {
-        //     adoptPet('dog');
-        //     deletePerson(people[0]);
-        //   } else {
-        //     adoptPet('cat');
-        //     deletePerson([0])
-        //   }
-          this.setState({
-            user: userName,
-            ...people,
-            ...allPets
-          })
-        }, 5000)
       })
     }
   }

@@ -17,45 +17,17 @@ class Adopt extends Component {
 			people: [],
 			staff: [],
 			allPets: [],
-			user: sessionStorage.getItem('user-name') || null,
+			user: sessionStorage.getItem('user') || null,
 			hasError: null,
 		};
 	}
 
 	componentDidMount() {
 		this.getData();
-		this.interval = setInterval(() => {
-			const { user, people } = this.state;
-			if (people[0] === user && people.length < 5) {
-				this.runDemo();
-			} else if (people[0] !== user && people.length > 1) {
-				this.mockAdoption();
-			}
-		}, 5000);
-	}
-
-	runDemo() {
-		const { people } = this.state;
-		const demoUsers = ['Jack', 'Diane', 'Yousef', 'Rebecca'];
-		const nextPerson = demoUsers[people.length - 1];
-		addPerson(nextPerson).then(() => {
-			this.getData();
-		});
-	}
-
-	mockAdoption() {
-		const { pets } = this.state;
-		const petsType = Object.entries(pets).filter(([pet]) => pet !== null);
-		if (petsType.length === 0) {
-			return;
-		}
-		const randomPet = Math.floor(Math.random() * petsType.length);
-		const adopted = `${petsType[randomPet][0]}s`;
-		this.handleAdopt(adopted);
-	}
-
-	componentWillUnmount() {
-		clearInterval(this.interval);
+    const setAllPets = getAllPets();
+    this.setState({
+      allPets: setAllPets
+    })
 	}
 
 	getData = async () => {
@@ -71,7 +43,25 @@ class Adopt extends Component {
 				hasError: true,
 			});
 		}
-	};
+  };
+  
+  startQueue = (ev) => {
+    ev.preventDefault();
+    const userName = ev.target.user.value;
+    const { user, allPets } = this.state;
+    if(user) {
+      sessionStorage.setItem('user', userName);
+      addPerson(userName).then(() => {
+        setInterval(() => {
+          console.table(allPets);
+        }, 5000)
+      })
+      this.setState({
+        user: userName,
+        people: [userName]
+      })
+    }
+  }
 
 	handleAddPerson = (ev) => {
 		ev.preventDefault();
@@ -89,7 +79,7 @@ class Adopt extends Component {
 		adoptPet(pet).then(() => {
 			const { people, user } = this.state;
 			if (people[0] === user) {
-				sessionStorage.removeItem('user-name', user);
+				sessionStorage.removeItem('user', user);
 				this.setState({
 					user: null,
 				});
@@ -127,7 +117,7 @@ class Adopt extends Component {
 						))}
 					</ul>
 					{!user ? (
-						<form onClick={(ev) => this.handleAddPerson}>
+						<form onClick={(ev) => this.startQueue}>
 							<label htmlFor="user">Enter name to get in line</label>
 							<input type="text" name="user" />
 							<button disabled={user}>Submit</button>

@@ -24,20 +24,18 @@ class Adopt extends Component {
 
 	componentDidMount() {
 		this.getData();
-    const setAllPets = getAllPets();
-    this.setState({
-      allPets: setAllPets
-    })
 	}
 
 	getData = async () => {
 		try {
 			const petData = await getNextPets();
-			const peopleData = await getPeople();
+      const peopleData = await getPeople();
+      const setAllPets = await getAllPets();
 			this.setState({
 				pets: petData,
-				people: peopleData,
-			});
+        people: peopleData,
+        allPets: setAllPets
+      });
 		} catch (error) {
 			this.setState({
 				hasError: true,
@@ -48,32 +46,30 @@ class Adopt extends Component {
   startQueue = (ev) => {
     ev.preventDefault();
     const userName = ev.target.user.value;
-    const { user, allPets } = this.state;
+    const { user, people, allPets } = this.state;
     if(user) {
       sessionStorage.setItem('user', userName);
       addPerson(userName).then(() => {
-        setInterval(() => {
+        const interval = setInterval(() => {
           console.table(allPets);
+          let num = Math.floor(Math.random() * 2);
+          if(num === 1) {
+            adoptPet('dog');
+          } else {
+            adoptPet('cat');
+          }
+          this.getData();
+          people.push(userName);
+          this.setState({
+            user: userName,
+          })
+          if(user === people[0]) {
+            clearInterval(interval);
+          }
         }, 5000)
-      })
-      this.setState({
-        user: userName,
-        people: [userName]
       })
     }
   }
-
-	handleAddPerson = (ev) => {
-		ev.preventDefault();
-		const userName = ev.target.user.value;
-		addPerson(userName).then(() => {
-			sessionStorage.setItem('user-name', userName);
-			this.setState({
-				user: userName,
-			});
-			this.getData();
-		});
-	};
 
 	handleAdopt = (pet) => {
 		adoptPet(pet).then(() => {
@@ -117,7 +113,7 @@ class Adopt extends Component {
 						))}
 					</ul>
 					{!user ? (
-						<form onClick={(ev) => this.startQueue}>
+						<form onClick={() => this.startQueue}>
 							<label htmlFor="user">Enter name to get in line</label>
 							<input type="text" name="user" />
 							<button disabled={user}>Submit</button>
@@ -142,8 +138,8 @@ class Adopt extends Component {
 									</ul>
 									<p>{dog.story}</p>
 									<button
-										disabled={!canAdopt}
-										onClick={() => this.handleAdopt('dogs')}
+										
+										onClick={() => this.handleAdopt('dog')}
 									>
 										Adopt this Dog!
 									</button>
@@ -158,8 +154,8 @@ class Adopt extends Component {
 									</ul>
 									<p>{cat.story}</p>
 									<button
-										disabled={!canAdopt}
-										onClick={() => this.handleAdopt('cats')}
+										
+										onClick={() => this.handleAdopt('cat')}
 									>
 										Adopt this Cat!
 									</button>
